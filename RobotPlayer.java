@@ -1,4 +1,4 @@
-package purpleplayer;
+package PurpleBot;
 import battlecode.common.*;
 
 public strictfp class RobotPlayer {
@@ -50,14 +50,6 @@ public strictfp class RobotPlayer {
                     rc.hireGardener(dir);
                 }
 
-                // Move randomly
-                tryMove(randomDirection());
-
-                // Broadcast archon's location for other robots on the team to know
-                MapLocation myLocation = rc.getLocation();
-                rc.broadcast(0,(int)myLocation.x);
-                rc.broadcast(1,(int)myLocation.y);
-
                 // Clock.yield() makes the robot wait until the next turn, then it will perform this loop again
                 Clock.yield();
 
@@ -71,32 +63,28 @@ public strictfp class RobotPlayer {
 	static void runGardener() throws GameActionException {
         System.out.println("I'm a gardener!");
 
+        // Move randomly 10 times
+        for(int i = 0 ; i < 10 ; i++){
+            tryMove(randomDirection());
+        	Clock.yield();
+        }
         // The code you want your robot to perform every round should be in this loop
         while (true) {
 
             // Try/catch blocks stop unhandled exceptions, which cause your robot to explode
             try {
+            	if(rc.canPlantTree(Direction.getEast()))
+            		rc.plantTree(Direction.getEast());
+            	if(rc.canPlantTree(Direction.getWest()))
+            		rc.plantTree(Direction.getWest());
+            	if(rc.canPlantTree(Direction.getNorth()))
+            		rc.plantTree(Direction.getNorth());
+            	if(rc.canPlantTree(Direction.getSouth()))
+            		rc.plantTree(Direction.getSouth());
 
-                // Listen for home archon's location
-                int xPos = rc.readBroadcast(0);
-                int yPos = rc.readBroadcast(1);
-                MapLocation archonLoc = new MapLocation(xPos,yPos);
-
-                // Generate a random direction
-                Direction dir = randomDirection();
-
-                // Randomly attempt to build a soldier or lumberjack in this direction
-                if (rc.canBuildRobot(RobotType.SOLDIER, dir) && Math.random() < .01) {
-                    rc.buildRobot(RobotType.SOLDIER, dir);
-                } else if (rc.canBuildRobot(RobotType.LUMBERJACK, dir) && Math.random() < .01 && rc.isBuildReady()) {
-                    rc.buildRobot(RobotType.LUMBERJACK, dir);
-                }
-
-                // Move randomly
-                tryMove(randomDirection());
-
-                // Clock.yield() makes the robot wait until the next turn, then it will perform this loop again
-                Clock.yield();
+            	//Try to buy victory points:
+            	if(rc.getTeamBullets() > 150)
+            		rc.donate(10);
 
             } catch (Exception e) {
                 System.out.println("Gardener Exception");
