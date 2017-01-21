@@ -1,2 +1,2 @@
 # PurpleBot
-Ansh
+It's ya boi
