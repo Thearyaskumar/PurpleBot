@@ -1,6 +1,6 @@
 package PurpleBot;
 import battlecode.common.*;
-
+//This must be simplified to just run the appropriate code from other classes:
 public strictfp class RobotPlayer {
     static RobotController rc;
 
