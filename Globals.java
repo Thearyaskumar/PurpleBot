@@ -7,8 +7,8 @@ public strictfp class Globals {
     public static MapLocation here;
     public static Team us;
     public static Team them;
-    public static int myID;
-    public static RobotType myType;
+    public int myID;
+    public RobotType myType;
     
     //This will automatically run if a class EXTENDS Globals
     public static void init(RobotController theRC) {
