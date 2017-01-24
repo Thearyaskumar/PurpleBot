@@ -22,7 +22,7 @@ public strictfp class Archon extends Globals {
     		if(currentMode != FLEE)
     			genGardener();
     		else
-    			System.out.println(flee() ? "Fleeing!" : "Unable to flee!");
+    			flee();
     		broadcastLocation();
     		Clock.yield();
     	}
@@ -75,7 +75,7 @@ public strictfp class Archon extends Globals {
     		}
     }
 
-    public static boolean flee(){ //Copied from Movement.java
+    public static void flee(){ //Copied from Movement.java
         BulletInfo[] bullets = rc.senseNearbyBullets();
         int blen = bullets.length;
         float ourX = rc.getLocation().x, ourY = rc.getLocation().y;
@@ -122,31 +122,13 @@ public strictfp class Archon extends Globals {
             e.printStackTrace();
         }
     }
-}
 
-class Danger {
-    public final double threatLevel, direction;
-
-    public Danger(float damage, float speed, double dist, double direction) {
-        threatLevel = dist / speed * damage;
-        this.direction = direction;
-    }
-}
-
-class Vector {
-    public final double x, y;
-
-    public Vector(double x, double y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public double dot(Vector other) {
-        return x * other.x + y * other.y;
-    }
-
-    public double magnitude() {
-        return Math.sqrt(x * x + y * y);
+    public static void broadcastLocation() throws GameActionException{
+        if(here != rc.getLocation()){
+            rc.broadcast(1, (int) update().x);
+            rc.broadcast(2, (int) here.y);
+            System.out.println("Broadcasted New Location");
+        }
     }
 }
 

@@ -101,7 +101,7 @@ public strictfp class Movement extends Globals {
 	}
 }
 
-public class Danger {
+class Danger {
 	public final double threatLevel, direction;
 
 	public Danger(float damage, float speed, double dist, double direction) {
@@ -110,7 +110,7 @@ public class Danger {
 	}
 }
 
-public class Vector {
+class Vector {
 	public final double x, y;
 
 	public Vector(double x, double y) {
