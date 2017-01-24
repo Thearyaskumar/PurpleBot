@@ -1,6 +1,6 @@
 package PurpleBot;
 import battlecode.common.*;
-
+//Done EXCEPT FOR FLEE!
 public strictfp class Archon extends Globals {
 
 	//Final Ints: Modes
@@ -83,19 +83,10 @@ public strictfp class Archon extends Globals {
 
     public static void broadcastLocation() throws GameActionException{
     	if(here != rc.getLocation()){
-    		rc.broadcast(1, locationToInt(update()));
+    		rc.broadcast(1, update().x);
+            rc.broadcast(2, here.y);
     		System.out.println("Broadcasted New Location");
     	}
-    }
-    public static int locationToInt(MapLocation m){
-    	String str = fastIntLength((int)m.x) + "" + fastIntLength((int)m.y) + "" + (int)m.x + "" + (int)m.y;
-    	return Integer.parseInt(str);
-    }
-    public static MapLocation intToLocation(int i){ //FIX THIS! (Arya)
-    	return null;
-    }
-    public static int fastIntLength(int n){
-    	return (n<100000)?((n<100)?((n<10)?1:2):(n<1000)?3:((n<10000)?4:5)):((n<10000000)?((n<1000000)?6:7):((n<100000000)?8:((n<1000000000)?9:10)));
     }
 }
 

@@ -68,14 +68,19 @@ public strictfp class Movement extends Globals {
 				collisions[cIndex++] = new Danger(bulletInfo.damage, bulletInfo.speed, dist, bulletInfo.dir.radians);
 			}
 		}
-		if (cIndex == 0)
+		if (cIndex == 0) //No Danger
 			return false;
-		double fleeAngle = -collisions[0].direction;
+
+		double fleeAngle = -collisions[0].direction; //There is danger - determine which direction to move in!
 		for (int i = 1; i < cIndex; i++) {
 			fleeAngle += -collisions[i].direction * collisions[i].threatLevel;
 		}
+
 		try {
-			rc.move(new Direction((float) fleeAngle));
+			if(rc.canMove(new Direction((float) fleeAngle)))
+				rc.move(new Direction((float) fleeAngle));
+			else
+				return false;
 		} catch (GameActionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
