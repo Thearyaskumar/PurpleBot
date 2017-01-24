@@ -68,7 +68,7 @@ public strictfp class Movement extends Globals {
 				collisions[cIndex++] = new Danger(bulletInfo.damage, bulletInfo.speed, dist, bulletInfo.dir.radians);
 			}
 		}
-		if (collisions.length == 0)
+		if (cIndex == 0)
 			return false;
 		double fleeAngle = -collisions[0].direction;
 		for (int i = 1; i < cIndex; i++) {
