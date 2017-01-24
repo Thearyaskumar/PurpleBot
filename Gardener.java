@@ -1,4 +1,6 @@
 package PurpleBot;
+import battlecode.common.Clock;
+import battlecode.common.Direction;
 import battlecode.common.GameActionException;
 
 
@@ -9,10 +11,12 @@ public strictfp class Gardener extends Globals {
     	findClearSpace();
     	setupTrees();
     	while(true){
+    		// Temporary
+    		rc.move(Direction.NORTH);
     		currentMode = rc.readBroadcast(0);
     		waterTrees();
     		generateRobot();
-
+    		Clock.yield();
     	}
     }
 

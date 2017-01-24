@@ -76,51 +76,52 @@ public strictfp class Archon extends Globals {
     }
 
     public static void flee(){ //Copied from Movement.java
-        BulletInfo[] bullets = rc.senseNearbyBullets();
-        int blen = bullets.length;
-        float ourX = rc.getLocation().x, ourY = rc.getLocation().y;
-        // All collisions from all directions
-        Danger[] collisions = new Danger[25];
-        int cIndex = 0;
-        // Calculate the danger that each bullet presents
-        for (int i = 0; i < blen && i < 20; i++) {
-            BulletInfo bulletInfo = bullets[i];
-            MapLocation bStart = bulletInfo.location;
-            MapLocation tmp = bulletInfo.location.add(bulletInfo.dir, 6);
-            // Movement vector
-            Vector a = new Vector(tmp.x - bStart.x, tmp.y - bStart.y);
-            // Vector between bullet and robot
-            Vector b = new Vector(ourX - bStart.x, ourY - bStart.y);
-            double scalar = (b.dot(a) / a.dot(a));
-            // B projected onto A
-            Vector c = new Vector(a.x * scalar, a.y * scalar);
-            // perpendicular distance between bullet vector and robot position
-            Vector d = new Vector(b.x - c.x, b.y - c.y);
-            double dist = d.magnitude();
-            // If the bullet will hit us on its current path
-            if (dist <= rc.getType().bodyRadius + bulletInfo.getRadius()) {
-                collisions[cIndex++] = new Danger(bulletInfo.damage, bulletInfo.speed, dist, bulletInfo.dir.radians);
-            }
-        }
-
-        // Dylan : Add the code to check for Robots, weighted by Robot.TYPE
-
-        if (cIndex == 0) //No Danger
-            return;
-
-        double fleeAngle = -collisions[0].direction; //There is danger - determine which direction to move in!
-        for (int i = 1; i < cIndex; i++) {
-            fleeAngle += -collisions[i].direction * collisions[i].threatLevel;
-        }
-
-        try {
-            if(rc.canMove(new Direction((float) fleeAngle + 90)))
-                rc.move(new Direction((float) fleeAngle + 90));
-            else if(rc.canMove(new Direction((float) fleeAngle - 90)))
-                rc.move(new Direction((float) fleeAngle - 90));
-        } catch (GameActionException e) {
-            e.printStackTrace();
-        }
+    	Movement.checkForDanger();
+//        BulletInfo[] bullets = rc.senseNearbyBullets();
+//        int blen = bullets.length;
+//        float ourX = rc.getLocation().x, ourY = rc.getLocation().y;
+//        // All collisions from all directions
+//        Danger[] collisions = new Danger[25];
+//        int cIndex = 0;
+//        // Calculate the danger that each bullet presents
+//        for (int i = 0; i < blen && i < 20; i++) {
+//            BulletInfo bulletInfo = bullets[i];
+//            MapLocation bStart = bulletInfo.location;
+//            MapLocation tmp = bulletInfo.location.add(bulletInfo.dir, 6);
+//            // Movement vector
+//            Vector a = new Vector(tmp.x - bStart.x, tmp.y - bStart.y);
+//            // Vector between bullet and robot
+//            Vector b = new Vector(ourX - bStart.x, ourY - bStart.y);
+//            double scalar = (b.dot(a) / a.dot(a));
+//            // B projected onto A
+//            Vector c = new Vector(a.x * scalar, a.y * scalar);
+//            // perpendicular distance between bullet vector and robot position
+//            Vector d = new Vector(b.x - c.x, b.y - c.y);
+//            double dist = d.magnitude();
+//            // If the bullet will hit us on its current path
+//            if (dist <= rc.getType().bodyRadius + bulletInfo.getRadius()) {
+//                collisions[cIndex++] = new Danger(bulletInfo.damage, bulletInfo.speed, dist, bulletInfo.dir.radians);
+//            }
+//        }
+//
+//        // Dylan : Add the code to check for Robots, weighted by Robot.TYPE
+//
+//        if (cIndex == 0) //No Danger
+//            return;
+//
+//        double fleeAngle = -collisions[0].direction; //There is danger - determine which direction to move in!
+//        for (int i = 1; i < cIndex; i++) {
+//            fleeAngle += -collisions[i].direction * collisions[i].threatLevel;
+//        }
+//
+//        try {
+//            if(rc.canMove(new Direction((float) fleeAngle + 90)))
+//                rc.move(new Direction((float) fleeAngle + 90));
+//            else if(rc.canMove(new Direction((float) fleeAngle - 90)))
+//                rc.move(new Direction((float) fleeAngle - 90));
+//        } catch (GameActionException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public static void broadcastLocation() throws GameActionException{

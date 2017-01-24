@@ -1,6 +1,7 @@
 package PurpleBot;
 
 import battlecode.common.BulletInfo;
+import battlecode.common.Clock;
 import battlecode.common.Direction;
 import battlecode.common.GameActionException;
 import battlecode.common.MapLocation;
@@ -40,6 +41,7 @@ public strictfp class Movement extends Globals {
 		// At the end, if there was danger, return TRUE. else, return FALSE.
 		// NOTE: If you returned false, and there was no danger, you should not
 		// have moved.
+		int start = Clock.getBytecodeNum();
 		BulletInfo[] bullets = rc.senseNearbyBullets();
 		if (bullets.length == 0)
 			return false;
@@ -64,9 +66,9 @@ public strictfp class Movement extends Globals {
 			Vector d = new Vector(b.x - c.x, b.y - c.y);
 			double dist = d.magnitude();
 			// If the bullet will hit us on its current path
-			if (dist <= rc.getType().bodyRadius + bulletInfo.getRadius()) {
+//			if (dist >= rc.getType().bodyRadius + bulletInfo.getRadius()) {
 				collisions[cIndex++] = new Danger(bulletInfo.damage, bulletInfo.speed, dist, bulletInfo.dir.radians);
-			}
+//			}
 		}
 		if (cIndex == 0) //No Danger
 			return false;
@@ -77,10 +79,10 @@ public strictfp class Movement extends Globals {
 		}
 
 		try {
-			if(rc.canMove(new Direction((float) fleeAngle + 90)))
-				rc.move(new Direction((float) fleeAngle + 90));
-			else if(rc.canMove(new Direction((float) fleeAngle - 90))){
-				rc.move(new Direction((float) fleeAngle - 90));
+			if(rc.canMove(new Direction((float) (fleeAngle + Math.PI / 2))))
+				rc.move(new Direction((float) (fleeAngle + Math.PI / 2)));
+			else if(rc.canMove(new Direction((float) (fleeAngle - Math.PI / 2)))){
+				rc.move(new Direction((float) (fleeAngle - Math.PI / 2)));
 			} else {
 				return false;
 			}
@@ -88,6 +90,8 @@ public strictfp class Movement extends Globals {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		int end = Clock.getBytecodeNum();
+		System.out.println("Bytecodes used: " + (end - start));
 		return true;
 	}
 
