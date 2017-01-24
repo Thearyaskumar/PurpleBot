@@ -18,4 +18,9 @@ public strictfp class Globals {
         myID = rc.getID();
         myType = rc.getType();
     }
+
+    public static MapLocation update() {
+        here = rc.getLocation();
+        return here;
+    }
 }

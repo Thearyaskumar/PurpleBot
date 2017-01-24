@@ -2,11 +2,19 @@ package PurpleBot;
 import battlecode.common.*;
 //Call the appropriate movement method from here, eg. Movement.bugMove(MapLocation m)
 public strictfp class Movement {
-    public static boolean bugMove(MapLocation m){
+    public static boolean move(MapLocation m){
+        tryShake();
     	if(checkForDanger(m))
     		return false;
     	else
     		return pathFind();
+    }
+
+    public static void tryShake(){
+        //This is the shake method : Ansh
+        //This will try to shake the first tree it can (if any), because trees yield rewards!
+        //Use update() to get current location, search for nearby trees in 6 directions. (2 units away)
+        //If trees exist, shake one. (THIS WILL THROW AN EXCEPTION EASILY - USE TRY-CATCH)
     }
 
     public static boolean checkForDanger(MapLocation m){
