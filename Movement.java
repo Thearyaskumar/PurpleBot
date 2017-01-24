@@ -77,10 +77,13 @@ public strictfp class Movement extends Globals {
 		}
 
 		try {
-			if(rc.canMove(new Direction((float) fleeAngle)))
-				rc.move(new Direction((float) fleeAngle));
-			else
+			if(rc.canMove(new Direction((float) fleeAngle + 90)))
+				rc.move(new Direction((float) fleeAngle + 90));
+			else if(rc.canMove(new Direction((float) fleeAngle - 90))){
+				rc.move(new Direction((float) fleeAngle - 90));
+			} else {
 				return false;
+			}
 		} catch (GameActionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -98,7 +101,7 @@ public strictfp class Movement extends Globals {
 	}
 }
 
-class Danger {
+public class Danger {
 	public final double threatLevel, direction;
 
 	public Danger(float damage, float speed, double dist, double direction) {
@@ -107,7 +110,7 @@ class Danger {
 	}
 }
 
-class Vector {
+public class Vector {
 	public final double x, y;
 
 	public Vector(double x, double y) {
