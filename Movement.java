@@ -7,7 +7,7 @@ import battlecode.common.MapLocation;
 public strictfp class Movement extends Globals {
 	public static boolean move(MapLocation m) {
 		tryShake();
-		if (checkForDanger(m))
+		if (checkForDanger())
 			return false;
 		else
 			return pathFind(m);
@@ -27,7 +27,7 @@ public strictfp class Movement extends Globals {
 	 * COSTS A LOT OF BYTECODES - checks for bullets in vicinity and if there
 	 * are, moves away
 	 */
-	public static boolean checkForDanger(MapLocation m) {
+	public static boolean checkForDanger() {
 		// This is a 6 point danger sensor: Dylan.
 		// Look in 6 directions, at a location 0.25 units away and 2 units away
 		// for each direction.

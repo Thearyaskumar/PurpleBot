@@ -76,9 +76,9 @@ public strictfp class Archon extends Globals {
     		}
     }
 
-    public static void flee(){ //MAKE DYLAN DO THIS!
+    public static void flee(){ //MAKE DYLAN DO THIS! (Current code is temporary)
     	System.out.println("Flee!");
-    	Movement.checkForDanger(new MapLocation(0,0));
+    	Movement.checkForDanger();
     }
 
     public static void broadcastLocation() throws GameActionException{
@@ -91,7 +91,7 @@ public strictfp class Archon extends Globals {
     	String str = fastIntLength((int)m.x) + "" + fastIntLength((int)m.y) + "" + (int)m.x + "" + (int)m.y;
     	return Integer.parseInt(str);
     }
-    public static MapLocation intToLocation(int i){ //FIX THIS!
+    public static MapLocation intToLocation(int i){ //FIX THIS! (Arya)
     	return null;
     }
     public static int fastIntLength(int n){
