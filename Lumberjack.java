@@ -1,7 +1,7 @@
 package PurpleBot;
 import battlecode.common.*;
-
-public strictfp class Lumberjack extends Globals {
+//Lumberjacks get broadcasts 11 - 20
+public strictfp class Lumberjack extends Globals { 
     public static void loop(){
 
     }

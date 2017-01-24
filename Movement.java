@@ -7,7 +7,7 @@ public strictfp class Movement {
     	if(checkForDanger(m))
     		return false;
     	else
-    		return pathFind();
+    		return pathFind(m);
     }
 
     public static void tryShake(){
@@ -24,11 +24,13 @@ public strictfp class Movement {
     	//Then move towards the location of the least damage. "rc" is your Robot Controller.
     	//At the end, if there was danger, return TRUE. else, return FALSE. 
     	//NOTE: If you returned false, and there was no danger, you should not have moved.
+        return false;
     }
 
     public static boolean pathFind(MapLocation m){
         //This is the Bug Pathfinding: Kiran
         //Bug Pathfind towards location m, avoiding obstacles and robots (friendly or otherwise). DO NOT Clock.yield() at the end.
     	//If pathFind was successful, return TRUE. Else, return FALSE (Some error occored, impossible to reach, etc.)
+        return false;
     }
 }
