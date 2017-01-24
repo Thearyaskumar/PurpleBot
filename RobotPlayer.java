@@ -27,6 +27,9 @@ public strictfp class RobotPlayer {
             case LUMBERJACK:
                 Lumberjack.loop();
                 break;
+            case TANK:
+                Tank.loop();
+                break;
         }
 	}
 }
