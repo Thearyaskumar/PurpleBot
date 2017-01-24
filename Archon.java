@@ -12,26 +12,19 @@ public strictfp class Archon extends Globals {
 
 	//Private Fields
 	private static int currentMode = GROW;
+	private static RobotInfo[] nearbyRobots;
 
+	//Main Method:
     public static void loop() throws GameActionException{
+    	System.out.println(locationToInt(new MapLocation(51,439)) + ""); //51, 439
     	while(true){
     		trySubmitBullets();
     		determineMode();
-    		switch(currentMode){
-    			//Add switch cases here based on mode!
-    			case GROW:
-    				System.out.println("Grow");
-    				break;
-    			case DEFENCE:
-    				System.out.println("Defence");
-    				break;
-    			case FLEE:
-    				System.out.println("Flee");
-    				break;
-    			case ARCHON_ATTACK:
-    				System.out.println("Archon Attack");
-    				break;
-    		}
+    		if(currentMode != FLEE)
+    			genGardener();
+    		else
+    			flee();
+    		broadcastLocation();
     		Clock.yield();
     	}
     }
@@ -50,7 +43,8 @@ public strictfp class Archon extends Globals {
     	//If an enemy is nearby (not Archon)
     	int count = 0;
     	boolean containsArchon = false;
-    	for(RobotInfo rob : rc.senseNearbyRobots(-1, them)){
+    	nearbyRobots = rc.senseNearbyRobots(-1, them);
+    	for(RobotInfo rob : nearbyRobots){
     		if(rob.getType() == RobotType.SOLDIER)
     			count+=5;
     		if(rob.getType() == RobotType.SCOUT)
@@ -60,8 +54,7 @@ public strictfp class Archon extends Globals {
     		if(rob.getType() == RobotType.ARCHON)
     			containsArchon = true;
     	}
-    	count += rc.senseNearbyBullets().length; //Add bullets to count.
-    	System.out.println(count + "");
+    	count += rc.senseNearbyBullets().length * 3; //Add bullets to count.
     	if(count > 4)
     		currentMode = DEFENCE;
     	if(count > 9)
@@ -71,6 +64,43 @@ public strictfp class Archon extends Globals {
     	if(count < 5 && containsArchon)
     		currentMode = ARCHON_ATTACK;
 
+    	//Commit to it (Broadcast to all robots)
     	rc.broadcast(0, currentMode);
     }
+
+    public static void genGardener() throws GameActionException {
+    	for(Direction d : new Direction[]{Direction.NORTH,Direction.SOUTH,Direction.EAST,Direction.WEST})
+    		if(rc.canHireGardener(d)){
+    			rc.hireGardener(d);
+    			break;
+    		}
+    }
+
+    public static void flee(){ //MAKE DYLAN DO THIS!
+    	System.out.println("Flee!");
+    	Movement.checkForDanger(new MapLocation(0,0));
+    }
+
+    public static void broadcastLocation() throws GameActionException{
+    	if(here != rc.getLocation()){
+    		rc.broadcast(1, locationToInt(update()));
+    		System.out.println("Broadcasted New Location");
+    	}
+    }
+    public static int locationToInt(MapLocation m){
+    	String str = fastIntLength((int)m.x) + "" + fastIntLength((int)m.y) + "" + (int)m.x + "" + (int)m.y;
+    	return Integer.parseInt(str);
+    }
+    public static MapLocation intToLocation(int i){ //FIX THIS!
+    	return null;
+    }
+    public static int fastIntLength(int n){
+    	return (n<100000)?((n<100)?((n<10)?1:2):(n<1000)?3:((n<10000)?4:5)):((n<10000000)?((n<1000000)?6:7):((n<100000000)?8:((n<1000000000)?9:10)));
+    }
 }
+
+
+/* The broadcast:
+[0] : currentMode
+[1] : currentArchonLocation [length of x coord] [length of y coord] [x coord] [y coord] NOTE: Use Archon.locationToInt() and Archon.intToLocation()
+*/
