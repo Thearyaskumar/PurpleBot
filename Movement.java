@@ -1,6 +1,8 @@
 package PurpleBot;
 
 import battlecode.common.BulletInfo;
+import battlecode.common.Direction;
+import battlecode.common.GameActionException;
 import battlecode.common.MapLocation;
 
 //Call the appropriate movement method from here, eg. Movement.bugMove(MapLocation m)
@@ -43,17 +45,40 @@ public strictfp class Movement extends Globals {
 			return false;
 		int blen = bullets.length;
 		float ourX = rc.getLocation().x, ourY = rc.getLocation().y;
+		// All collisions from all directions
+		Danger[] collisions = new Danger[25];
+		int cIndex = 0;
+		// Calculate the danger that each bullet presents
 		for (int i = 0; i < blen && i < 20; i++) {
 			BulletInfo bulletInfo = bullets[i];
 			MapLocation bStart = bulletInfo.location;
 			MapLocation tmp = bulletInfo.location.add(bulletInfo.dir, 6);
 			// Movement vector
 			Vector a = new Vector(tmp.x - bStart.x, tmp.y - bStart.y);
+			// Vector between bullet and robot
 			Vector b = new Vector(ourX - bStart.x, ourY - bStart.y);
 			double scalar = (b.dot(a) / a.dot(a));
+			// B projected onto A
 			Vector c = new Vector(a.x * scalar, a.y * scalar);
+			// perpendicular distance between bullet vector and robot position
 			Vector d = new Vector(b.x - c.x, b.y - c.y);
-			System.out.println(d.magnitude());
+			double dist = d.magnitude();
+			// If the bullet will hit us on its current path
+			if (dist <= rc.getType().bodyRadius + bulletInfo.getRadius()) {
+				collisions[cIndex++] = new Danger(bulletInfo.damage, bulletInfo.speed, dist, bulletInfo.dir.radians);
+			}
+		}
+		if (collisions.length == 0)
+			return false;
+		double fleeAngle = -collisions[0].direction;
+		for (int i = 1; i < cIndex; i++) {
+			fleeAngle += -collisions[i].direction * collisions[i].threatLevel;
+		}
+		try {
+			rc.move(new Direction((float) fleeAngle));
+		} catch (GameActionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return true;
 	}
@@ -65,6 +90,15 @@ public strictfp class Movement extends Globals {
 		// If pathFind was successful, return TRUE. Else, return FALSE (Some
 		// error occored, impossible to reach, etc.)
 		return false;
+	}
+}
+
+class Danger {
+	public final double threatLevel, direction;
+
+	public Danger(float damage, float speed, double dist, double direction) {
+		threatLevel = dist / speed * damage;
+		this.direction = direction;
 	}
 }
 
