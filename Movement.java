@@ -24,6 +24,14 @@ public strictfp class Movement extends Globals {
 		// directions. (2 unitsgit away)
 		// If trees exist, shake one. (THIS WILL THROW AN EXCEPTION EASILY - USE
 		// TRY-CATCH)
+		
+		MapLocation loc = update();
+		MapLocation tN = loc.add(Direction.NORTH);
+		MapLocation tS = loc.add(Direction.SOUTH);
+		MapLocation tE = loc.add(Direction.EAST);
+		MapLocation tW = loc.add(Direction.WEST);
+		
+		if()
 	}
 
 	/**
