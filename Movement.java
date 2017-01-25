@@ -31,7 +31,38 @@ public strictfp class Movement extends Globals {
 		MapLocation tE = loc.add(Direction.EAST);
 		MapLocation tW = loc.add(Direction.WEST);
 		
-		if()
+		if(rc.canShake(tN))
+		{
+			try
+			{
+				rc.shake(tN);
+			}
+			catch(NullPointerException e){}
+		}
+		else if(rc.canShake(tS))
+		{
+			try
+			{
+				rc.shake(tS);
+			}
+			catch(NullPointerException e){}
+		}
+		else if(rc.canShake(tE))
+		{
+			try
+			{
+				rc.shake(tE);
+			}
+			catch(NullPointerException e){}
+		}
+		else if(rc.canShake(tW))
+		{
+			try
+			{
+				rc.shake(tW);
+			}
+			catch(NullPointerException e){}
+		}
 	}
 
 	/**
